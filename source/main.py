@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 
 class PasswordManager(Interface):
     def __init__(self, debug):
+        dir_path = "../data" if debug else "../../data"
+        os.makedirs(dir_path, exist_ok=True)
         load_dotenv()
         super().__init__(debug, os.getenv("EMAIL"), os.getenv("PHONE_NUMBER"))
         self.lower_letters = list(string.ascii_lowercase)
