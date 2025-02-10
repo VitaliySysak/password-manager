@@ -17,6 +17,7 @@ class Interface(Actions):
         window.title("Password Manager")
         window.config(padx=200, pady=60, bg=self.primary)
         window.geometry("1280x720")
+        window.minsize(920, 600)
 
     def create_gui(self):
         self.draw_images()
@@ -202,6 +203,7 @@ class Interface(Actions):
         popup.title("All Sites")
         popup.geometry("1280x720")
         popup.config(bg=self.primary)
+        popup.minsize(920, 600)
         
         self.center_window(popup)
 

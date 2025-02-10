@@ -195,9 +195,13 @@ class Actions:
             self.tree.delete(selected_item) 
 
     def on_configure(self, _):
+        APP_WIDTH = 880
+        APP_HEIGHT = 700
         window_width = window.winfo_width()
         window_height = window.winfo_height()
-        x_offset = (window_width - 880) // 2
-        y_offset = (window_height - 700) // 2
+
+        x_offset = (window_width - APP_WIDTH) // 2
+        y_offset = (window_height - APP_HEIGHT) // 2
 
         window.config(padx=x_offset, pady=y_offset, bg=self.primary)
+
