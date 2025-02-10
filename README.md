@@ -19,8 +19,7 @@ No installation is required! Simply download the executable file and run it.
 
 1. Download `password-manager` from the (https://github.com/VitaliySysak/password-manager) section.
 2. Open the .env file and enter your EMAIL and PHONE_NUMBER.
-3. Move the Password Manager shortcut to your desktop and launch the application.
-4. After adding your first password, a passwords.csv file will be automatically created inside the data folder.
+3. After adding your first password, a passwords.csv file will be automatically created inside the data folder.
 
 ## Important Notes
 
