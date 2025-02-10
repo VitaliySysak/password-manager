@@ -30,5 +30,5 @@ class PasswordManager(Interface):
         self.create_gui()
 
 if __name__ == "__main__":
-    password_manager = PasswordManager(debug=True)
+    password_manager = PasswordManager(debug=False)
     window.mainloop()
