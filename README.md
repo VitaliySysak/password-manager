@@ -26,3 +26,10 @@ No installation is required! Simply download the executable file and run it.
 
 Do not move the passwords.csv file!
 If the file is missing, the program will automatically create a new one in the data folder.
+
+## For developers 
+
+If you want to modify program.
+1. In main.py, set debug=True before modifying the code. Once you finish, remember to set debug=False.
+2. Install package (pip install pyinstaller)
+3. Execute pyinstaller --onefile --noconsole --icon=logo.ico --upx-exclude python39.dll --exclude matplotlib --strip main.py in terminal

@@ -9,7 +9,7 @@ class Actions:
     def __init__(self, debug):
         self.window = window
         self.csv_path = '../' if debug else '../../'
-        print(self.csv_path)
+        window.bind("<Configure>", self.on_configure)
 
     def add_data(self):
         website_or_app = self.website_or_app_input.get().lower()
@@ -193,3 +193,14 @@ class Actions:
             self.df.to_csv(self.csv_path + "data/passwords.csv", index=False)
             
             self.tree.delete(selected_item) 
+
+    def on_configure(self, _):
+        if window.state() == "zoomed":
+            screen_width = window.winfo_screenwidth()
+            screen_height = window.winfo_screenheight()
+            x_offset = (screen_width - 880) // 2
+            y_offset = (screen_height - 700) // 2
+
+            window.config(padx=x_offset, pady=y_offset, bg=self.primary)
+        elif window.state() == "normal":
+            window.config(padx=200, pady=60, bg=self.primary)

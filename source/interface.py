@@ -17,7 +17,6 @@ class Interface(Actions):
         window.title("Password Manager")
         window.config(padx=200, pady=60, bg=self.primary)
         window.geometry("1280x720")
-        window.resizable(False, False)
 
     def create_gui(self):
         self.draw_images()
