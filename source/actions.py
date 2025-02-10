@@ -195,12 +195,9 @@ class Actions:
             self.tree.delete(selected_item) 
 
     def on_configure(self, _):
-        if window.state() == "zoomed":
-            screen_width = window.winfo_screenwidth()
-            screen_height = window.winfo_screenheight()
-            x_offset = (screen_width - 880) // 2
-            y_offset = (screen_height - 700) // 2
+        window_width = window.winfo_width()
+        window_height = window.winfo_height()
+        x_offset = (window_width - 880) // 2
+        y_offset = (window_height - 700) // 2
 
-            window.config(padx=x_offset, pady=y_offset, bg=self.primary)
-        elif window.state() == "normal":
-            window.config(padx=200, pady=60, bg=self.primary)
+        window.config(padx=x_offset, pady=y_offset, bg=self.primary)
