@@ -32,4 +32,6 @@ If the file is missing, the program will automatically create a new one in the d
 If you want to modify program.
 1. In main.py, set debug=True before modifying the code. Once you finish, remember to set debug=False.
 2. Install package (pip install pyinstaller)
-3. Execute (pyinstaller --onefile --noconsole --noupx --clean --exclude matplotlib --icon=logo.ico  main.py) in terminal
+3. Move to src directory and execute 
+(pyinstaller --onefile --noconsole --icon=logo.ico --upx-exclude python39.dll --exclude matplotlib --strip passwords.py)
+in terminal
