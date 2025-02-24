@@ -1,27 +1,16 @@
 from tkinter import *
 from PIL import Image, ImageTk
-from actions import Actions, window
+from actions import Actions
 from tkinter import ttk
-
-def on_enter_pressed(event):
-    """Function to call when Enter is pressed."""
-    print("Enter key pressed! Entry content:", event.widget.get())
+from settings import window
 
 class Interface(Actions):
-    def __init__(self, debug, EMAIL, PHONE_NUMBER):
-        super().__init__(debug)
-
-        self.path = "./" if debug else "../"
+    def __init__(self):
+        super().__init__()
         self.primary = "#1F1F1F"
         self.secondary = "#FFFFFf"
-
-        self.email = EMAIL
-        self.phone_number = PHONE_NUMBER
-            
-        window.title("Password Manager")
-        window.config(padx=200, pady=60, bg=self.primary)
-        window.geometry("1280x720")
-        window.minsize(920, 600)
+    
+        self.get_settings()
 
     def create_gui(self):
         self.draw_images()
@@ -76,7 +65,7 @@ class Interface(Actions):
         self.password_input = Entry(
             width=31, font=("Arial", 15),
             bg=self.primary, fg=self.secondary,
-            border=4, insertbackground=self.secondary
+            border=4, insertbackground=self.secondary,
         )
         self.password_input.grid(row=4, column=1, padx=(18, 0), pady=(0, 5))
 
@@ -98,7 +87,7 @@ class Interface(Actions):
             text="View All Sites",
             width=22,
             font=("Arial", 11, "bold"),
-            command=self.show_all_sites,
+            command=self.all_sites,
             bg=self.primary,
             fg=self.secondary,
             border=2,
@@ -146,7 +135,20 @@ class Interface(Actions):
         )
         self.add_button.grid(row=5, column=1, columnspan=2, sticky="E", padx=(0, 92))
 
-    def message_box(self, *args, title, popup_type="warning", offset_y=-10, height=140):
+        self.settings_button = Button(
+            text="⚙️",
+            bg=self.primary,
+            highlightthickness=0,
+            bd=0,
+            width=4, 
+            fg=self.secondary,
+            font=("Arial", 20),
+            activebackground="#303030",
+            activeforeground=self.secondary,
+            command=self.settings
+        )
+
+    def message_box(self, *args, title, popup_type="warning", height=140):
         popup = Toplevel(window)
         popup.title(title)
         popup.configure(bg=self.primary)
@@ -204,10 +206,13 @@ class Interface(Actions):
         
         close_button.place(x=270, y=height - 44, width=80, height=25)
         
-    def show_all_sites(self):
+    def all_sites(self):
         popup = Toplevel(window)
         popup.title("All Sites")
-        popup.geometry("1280x720")
+        if self.is_maximize_on.get():
+            popup.state("zoomed")
+        else:
+            popup.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
         popup.config(bg=self.primary)
         popup.minsize(920, 600)
         
@@ -265,12 +270,134 @@ class Interface(Actions):
         self.tree.pack(side="left", fill="both", expand=True) 
 
         self.context_menu = Menu(self.tree, tearoff=0)
-        self.context_menu.add_command(label="Delete Row", command=self.delete_selected_row)
+        self.context_menu.add_command(label="Delete Row", command=lambda: self.delete_selected_row(popup))
 
-        self.tree.bind("<Button-3>", self.show_context_menu)  
+        self.tree.bind("<Button-3>", self.show_context_menu)    
     
     def show_context_menu(self, event):
         selected_item = self.tree.identify_row(event.y) 
         if selected_item:  
             self.tree.selection_set(selected_item) 
             self.context_menu.post(event.x_root, event.y_root)
+
+    def settings(self):
+        popup = Toplevel(window)
+        popup.title("Settings")
+        popup.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
+        popup.config(bg=self.primary)
+        popup.minsize(920, 600)
+
+        self.center_window(popup)
+        title = Label(popup, text="Settings", font=("Arial", 20, "bold"), bg=self.primary, fg=self.secondary, wraplength=350)
+        title.grid(row=0, column=0, padx=(20, 0), pady=(6, 0))
+
+        email_label = Label(popup, text="Email: ", font=("Arial", 14, "bold"), bg=self.primary, fg=self.secondary, wraplength=350)
+        email_label.grid(row=1, column=0, padx=(20, 0), pady=(6, 0))
+
+        self.settings_email_input = Entry(
+            popup,
+            width=30, font=("Arial", 15),
+            bg=self.primary, fg=self.secondary,
+            border=4, insertbackground=self.secondary
+        )
+        self.settings_email_input.grid(row=1, column=1)
+        self.settings_email_input.insert(END, self.email)
+
+        phone_number_label = Label(popup, text="Phone number: ", font=("Arial", 14, "bold"), bg=self.primary, fg=self.secondary, wraplength=350)
+        phone_number_label.grid(row=2, column=0, padx=(20, 0), pady=(6, 0))
+
+        self.settings_phone_number_input = Entry(
+            popup,
+            width=30, font=("Arial", 15),
+            bg=self.primary, fg=self.secondary,
+            border=4, insertbackground=self.secondary
+        )
+        self.settings_phone_number_input.insert(END, self.phone_number)
+        self.settings_phone_number_input.grid(row=2, column=1, pady=(6, 0))
+
+        self.create_toggles(popup)
+
+        secret_key = Label(popup, text="Secret key: ", font=("Arial", 14, "bold"), bg=self.primary, fg=self.secondary, wraplength=350)
+        secret_key.grid(row=4, column=0, padx=(20, 0), pady=(6, 0))
+
+        self.settings_secret_key_input = Entry(
+            popup,
+            width=48, font=("Arial", 15),
+            bg=self.primary, fg=self.secondary,
+            border=4, insertbackground=self.secondary,
+            readonlybackground=self.primary
+        )
+        self.settings_secret_key_input.insert(END, self.secret_key)
+        self.settings_secret_key_input.config(state="readonly")
+        self.settings_secret_key_input.grid(row=4, column=1, pady=(6, 0), padx=(66, 0), columnspan=2)
+        change_secret_key_button = Button(
+            popup,
+            text="Change Key⚠️",
+            width=14,
+            font=("Arial", 11, "bold"),
+            command=lambda: self.settings_secret_key_input.config(state="normal"),
+            bg="#CA4754",
+            fg=self.primary,
+            border=2,
+            activebackground="#303030",
+            activeforeground=self.secondary,
+        )
+        change_secret_key_button.grid(row=4, column=3, padx=(20, 0), pady=(6, 0))
+
+        save_button = Button(
+            popup,
+            text="Save!",
+            width=22,
+            font=("Arial", 11, "bold"),
+            command=lambda: self.apply_settings(popup),
+            bg=self.primary,
+            fg=self.secondary,
+            border=2,
+            activebackground="#303030",
+            activeforeground=self.secondary,
+        )
+        save_button.grid(row=5, column=0, padx=(20, 0), pady=(6, 0))
+
+    def create_toggles(self, popup):
+        self.is_maximize_on = BooleanVar(value=self.get_setting_value())
+
+        label = Label(
+            popup,
+            text="Maximize Window",
+            font=("Arial", 14, "bold"),
+            bg=self.primary,
+            fg=self.secondary,
+            wraplength=350
+        )
+
+        button_off = Button(
+            popup,
+            text="Off",
+            width=17,
+            font=("Arial", 11, "bold"),
+            bg=self.primary,
+            fg=self.secondary,
+            border=3,
+            activebackground="#303030",
+            activeforeground=self.secondary,
+            command=lambda: self.toggle(False, button_on, button_off), 
+        )
+
+        button_on = Button(
+            popup,
+            text="On",
+            width=17,
+            font=("Arial", 11, "bold"),
+            bg=self.primary,
+            fg=self.secondary,
+            border=3,
+            activebackground="#303030",
+            activeforeground=self.secondary,
+            command=lambda: self.toggle(True, button_on, button_off),
+        )
+
+        label.grid(row=3, column=0)
+        button_off.grid(row=3, column=1, padx=(0, 175), pady=(6, 0))
+        button_on.grid(row=3, column=1, padx=(175, 0), pady=(6, 0))
+
+        self.toggle(self.is_maximize_on.get(), button_on, button_off)

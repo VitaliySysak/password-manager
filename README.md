@@ -18,9 +18,8 @@ No installation is required! Simply download the executable file and run it.
 ### First Run (Windows)
 
 1. Download `password-manager` from the (https://github.com/VitaliySysak/password-manager) section.
-2. Open the .env file and enter your EMAIL and PHONE_NUMBER.
-3. In the src/dist folder, locate the main.exe file. Run it and create a shortcut to place on your desktop.
-4. After adding your first password, a passwords.csv file will be automatically created inside the data folder.
+2. In the src/dist folder, locate the main.exe file. Run it and create a shortcut to place on your desktop.
+3. After adding your first password, a passwords.csv file will be automatically created inside the data folder.
 
 ## Important Notes
 
@@ -33,5 +32,5 @@ If you want to modify program.
 1. In main.py, set debug=True before modifying the code. Once you finish, remember to set debug=False.
 2. Install package (pip install pyinstaller)
 3. Move to src directory and execute 
-(pyinstaller --onefile --noconsole --icon=logo.ico --upx-exclude python39.dll --exclude matplotlib --strip passwords.py)
+(pyinstaller --onefile --noconsole --icon=logo.ico --upx-exclude python39.dll --exclude matplotlib --strip main.py)
 in terminal
