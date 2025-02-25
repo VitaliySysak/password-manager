@@ -135,7 +135,7 @@ class Actions(Settings, Crypto):
             elif col == "Phone number":
                 tree.column(col, width=80, anchor="w")
             elif col == "Password":
-                tree.column(col, width=200, anchor="w")
+                tree.column(col, width=120, anchor="w")
 
         for _, row in self.df.iterrows(): 
             row_values = list(row)
