@@ -272,7 +272,8 @@ class Interface(Actions):
         self.context_menu = Menu(self.tree, tearoff=0)
         self.context_menu.add_command(label="Delete Row", command=lambda: self.delete_selected_row(popup))
 
-        self.tree.bind("<Button-3>", self.show_context_menu)    
+        self.tree.bind("<Button-3>", self.show_context_menu)   
+        self.tree.bind("<Delete>", lambda event: self.delete_selected_row(popup)) 
     
     def show_context_menu(self, event):
         selected_item = self.tree.identify_row(event.y) 

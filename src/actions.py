@@ -45,6 +45,8 @@ class Actions(Settings, Crypto):
             self.df.index = range(1, len(self.df) + 1)
             self.df.to_csv(self.data_path + 'data/passwords.csv', index=True, index_label="ID")
 
+            pyperclip.copy(password)
+
             self.website_or_app_input.delete(0, END)
             self.password_input.delete(0, END)
 
